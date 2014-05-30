@@ -15,12 +15,21 @@ class Search extends CI_Controller {
 
     public function index() {
         $this->response = $this->Search_model->search($this->input->get());
-        $this->responseJSON();
+        $this->responseJSON($this->input->get());
     }
 
-    private function responseJSON() {
-        $this->output->set_content_type("application/json; charset=utf-8");
-        echo json_encode($this->response, JSON_UNESCAPED_UNICODE);
+    private function responseJSON($gets) {
+        $this->output->set_header('Content-Type: application/json; charset=utf8');
+        $this->output->set_header('Access-Control-Allow-Origin: *');
+        $this->output->set_header('Access-Control-Max-Age: 3628800');
+        $this->output->set_header('Access-Control-Allow-Methods: GET');
+
+        $response = json_encode($this->response, JSON_UNESCAPED_UNICODE);
+        echo $this->input->get('callback') . "(" . $response . ")";
+    }
+    
+    public function lookup(){
+        
     }
 
 }
